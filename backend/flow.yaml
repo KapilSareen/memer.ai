@@ -1,0 +1,37 @@
+version: "1.0.0"
+
+metadata:
+  name: "meme-url-generator"
+  description: "Generates meme image url"
+  author: "swasy"
+  tags: 
+    - meme
+    - fun
+  private: true
+
+inputs:
+  user-prompt:
+    type: string
+    description: "User-provided description of the meme"
+    required: true
+    example: "Generate a meme about cows"
+
+model:
+  provider: openai
+  name: gpt-4o
+
+prompt: |
+  You are an AI that generates meme image URLs. When a user provides a description for a meme, return only a direct URL to an image (no extra information, no text other than the URL).
+  Example input: "Generate a meme about cows"
+  Example output: "https://i.imgflip.com/9hur2x.jpg"
+
+  For now, return the following hardcoded URL:
+  https://i.imgflip.com/9hur2x.jpg
+
+readme: |
+  # Meme Generator Flow
+  This flow generates meme content based on a template and user input.
+  - It uses GPT-4o to match the provided **user-prompt** with the **template-name** and determine how to fill the meme's placeholders.
+  - The number of placeholders is determined by the **box-count**, and it will output that many pieces of text for each placeholder in the meme template.
+  - The output should align with the tone and format of the meme template.
+  - **Important:** The prompt should **only return the URL** of the meme image, no additional text or explanation.
