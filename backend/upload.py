@@ -11,7 +11,7 @@ if not API_KEY:
 
 client = MiraClient(config={"API_KEY": API_KEY})
 
-flows = [ "flows/flow3.yaml"]
+flows = [ "flows/flow1.yaml"]
 
 for flow_file in flows:
     try:

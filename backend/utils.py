@@ -71,7 +71,7 @@ def get_right_template(user_prompt):
     """
 
     client = MiraClient(config={"API_KEY": os.getenv("API_KEY")})    
-    flow1 = "v1p3r/template-decider-1/1.3.0"
+    flow1 = "v1p3r/template-decider-1"
     # flow1= Flow(source="flow1.yaml")
 
     input_dict = {
@@ -104,7 +104,7 @@ def get_meme_strings(user_prompt, box_count, template_name):
     """
 
     client = MiraClient(config={"API_KEY": os.getenv("API_KEY")})
-    flow2 = "v1p3r/meme-generator-1/1.3.0"
+    flow2 = "v1p3r/meme-generator-1"
     # flow2= Flow(source="flow2.yaml")
     input_dict = {
         "user-prompt": user_prompt,

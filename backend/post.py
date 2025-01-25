@@ -5,7 +5,7 @@ import dotenv
 dotenv.load_dotenv()
 
 
-def post_tweet(id, userprompt):
+def post_tweet(id, userprompt, entity_id):
     client = MiraClient(config={"API_KEY": os.getenv("API_KEY")})
 
     input_dict = {
@@ -22,7 +22,7 @@ def post_tweet(id, userprompt):
             COMPOSIO_API_KEY=os.getenv("COMPOSIO_API_KEY"),
             ACTION="TWITTER_CREATION_OF_A_POST",
             TASK="POST THIS TWEET {content}",  
-            ENTITY_ID="default", 
+            ENTITY_ID=entity_id, 
         )
     )
     return response
