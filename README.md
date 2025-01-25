@@ -15,8 +15,8 @@ The system operates in three core flows:
 - Uses AI to generate text strings that align with the selected meme format.  
 
 ### 3️⃣ Tweet Composition & Posting  
-- Works with composio tools to generate an engaging caption.  
-- Prepares a tweet with the meme and allows the user to review before posting.  
+- Works with composio tools to post a tweet with an engaging caption.  
+- Allows the user to review before posting.  
 
 ## 🛠 Challenges We Faced  
 
