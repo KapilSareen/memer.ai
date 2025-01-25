@@ -20,16 +20,16 @@ export default function MemeGenerator() {
     setBottomText("madarchod")
     
     let a = await fetch("http://localhost:5000/generate-meme", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({"user_prompt": topText })})
-    console.log(a)
-    // setTimeout(() => {
-    //   setMemeUrl(a.text) 
-    //   setLoading(false)
-    // }, 1500)
+    let response=await a.json()
+    console.log(response['meme'])
+    setTimeout(() => {
+      setMemeUrl(response['meme']) 
+      setLoading(false)
+    }, 1500)
   }
 
   const uploadToTwitter = async () => {
-    // Placeholder logic for uploading meme to Twitter
-    fetch("http://localhost:5000/post-meme", {method: "POST", body: JSON.stringify({ "user_prompt":bottomText , "meme":memeUrl})})
+    fetch("http://localhost:5000/post-meme", {method: "POST", body: JSON.stringify({ "user_prompt":topText , "meme":memeUrl})})
     alert("Meme uploaded to Twitter!")
   }
 

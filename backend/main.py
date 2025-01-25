@@ -14,6 +14,7 @@ USERNAME = os.getenv("MEME_USER")
 PASSWORD = os.getenv("MEME_PASS")
 
 CORS(app)
+
 def create_meme_from_prompt(user_prompt: str):
     try:
         template_name = utils.get_right_template(user_prompt)['result']
@@ -47,7 +48,7 @@ def generate_meme():
     meme = create_meme_from_prompt(user_prompt)
     if meme is None:
         return jsonify({"error": "Failed to create meme"}), 500 
-    return meme
+    return {"meme": meme}
 
 @app.route('/post-meme', methods=['POST'])
 def post_meme():
