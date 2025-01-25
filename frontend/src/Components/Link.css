@@ -1,0 +1,17 @@
+.Linker {
+    width: 50vw;
+    height: auto;
+    position: absolute;
+    left: 25vw;
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 8px;
+
+    h1 {
+        font size: 2vw;
+        font-family: "Lilita One", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+}

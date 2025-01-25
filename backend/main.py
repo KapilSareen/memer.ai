@@ -14,11 +14,6 @@ app = Flask(__name__)
 
 ENTITY_IDS = []
 
-app.config["SECRET_KEY"] = os.getenv("SESSION_SECRET", "default-secret-key")
-app.config["SESSION_TYPE"] = "filesystem"
-app.config["SESSION_FILE_DIR"] = "/tmp/sessions"
-
-Session(app)
 
 USERNAME = os.getenv("MEME_USER")
 PASSWORD = os.getenv("MEME_PASS")
@@ -54,14 +49,10 @@ def sign_in():
     entity_id = data.get("username")
     redirect_url = data.get("redirect_url")
 
-    if entity_id in ENTITY_IDS:
-        return jsonify({"error": "Already signed in"}), 400
     
     toolset = ComposioToolSet()
     entity = toolset.get_entity(entity_id)
 
-    if 'entity_id' in session:
-        return jsonify({"error": "Already signed in"}), 400
     
     integration = entity.client.integrations.create(
         name="TWITTER_INTEGRATION", 
@@ -70,15 +61,12 @@ def sign_in():
         use_composio_auth=True
     )
     r = entity.initiate_connection("TWITTER", redirect_url=redirect_url, integration=integration)
-
-    session['entity_id'] = entity_id
+    
     ENTITY_IDS.append(entity_id)
     return {"auth-url": r.redirectUrl}
 
 @app.route('/api/generate-meme', methods=['POST'])
 def generate_meme():
-    if 'entity_id' not in session:
-        return jsonify({"error": "Unauthorized"}), 401
 
     data = request.get_json()
     print(data)
@@ -92,22 +80,16 @@ def generate_meme():
 
 @app.route('/api/post-meme', methods=['POST'])
 def post_meme():
-    if 'entity_id' not in session:
-        return jsonify({"error": "Unauthorized"}), 401
 
     data = request.get_json()
     meme = data.get("meme")
     user_prompt = data.get("user_prompt")
+    entity_id= data.get("entity_id")
 
     media_id = utils.get_media_id(meme)
     print("Media ID: ", media_id)
-    response = post.post_tweet(media_id, user_prompt, session["entity_id"])
+    response = post.post_tweet(media_id, user_prompt, entity_id)
     return jsonify({"media_id": media_id, "response": response})
-
-@app.route('/api/logout', methods=['POST'])
-def logout():
-    session.clear()
-    return jsonify({"message": "Logged out successfully"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
