@@ -30,11 +30,7 @@ def create_meme_from_prompt(user_prompt: str):
 
         meme = utils.create_meme(template_id, USERNAME, PASSWORD, result1)
         print("Meme Created:", meme)
-
-        media_id = utils.get_media_id(meme)
-        print("Media ID: ", media_id)
-
-        return media_id
+        return meme
     except Exception as e:
         print(f"Error creating meme: {e}")
         return None
@@ -43,17 +39,21 @@ def create_meme_from_prompt(user_prompt: str):
 def generate_meme():
     data = request.get_json()
     user_prompt = data.get("user_prompt")
-    
     if not user_prompt:
         return jsonify({"error": "Missing user_prompt"}), 400
-    
-    media_id = create_meme_from_prompt(user_prompt)
-    
-    if media_id is None:
-        return jsonify({"error": "Failed to create meme"}), 500
-    
+    meme = create_meme_from_prompt(user_prompt)
+    if meme is None:
+        return jsonify({"error": "Failed to create meme"}), 500 
+    return meme
+
+@app.route('/post-meme', methods=['POST'])
+def post_meme():
+    data= request.get_json()
+    meme= data.get("meme")
+    user_prompt= data.get("user_prompt")
+    media_id = utils.get_media_id(meme)
+    print("Media ID: ", media_id)
     response = post.post_tweet(media_id, user_prompt)
-    
     return jsonify({"media_id": media_id, "response": response})
 
 if __name__ == '__main__':
