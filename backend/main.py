@@ -76,6 +76,7 @@ def generate_meme():
     meme = create_meme_from_prompt(user_prompt)
     if meme is None:
         return jsonify({"error": "Failed to create meme"}), 500 
+    print(meme)
     return {"meme": meme}
 
 @app.route('/api/post-meme', methods=['POST'])
