@@ -1,0 +1,108 @@
+.Background {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+.Landing {
+    position: relative;
+    top: 0;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+}
+.Hero {
+    width: 50vw;
+    height: 80vh;
+    position: absolute;
+    top: 10vh;
+    left: 50vw;
+    z-index: 1;
+}
+.Title {
+    font-family: "Lilita One", serif;
+    font-weight: 400;
+    font-style: normal;
+    position: absolute;
+    top: 2vh;
+    padding: 0;
+    margin: 0;
+    left: 2vw;
+    color: rgb(241, 176, 35);
+    font-size: 2.5vw;
+    text-decoration: underline;
+    
+}
+.Description {
+    font-family: "Barrio", serif;
+    font-weight: 400;
+    font-style: normal;
+    position: absolute;
+    top: 30vh;
+    left: 2vw;
+    color: white;
+    font-size: 2.5vw;
+}
+.Description2 {
+    font-family: "Lilita One", serif;
+    font-weight: 400;
+    font-style: normal;
+    position: absolute;
+    top: 40vh;
+    left: 2vw;
+    width: 50vw;
+    color: white;
+    line-height: 1.5vw;
+    font-size: 1.5vw;
+}
+.Start {
+    font-family: "Lilita One", serif;
+    font-weight: 400;
+    font-style: normal;
+    position: absolute;
+    top: 60vh;
+    left: 10vw;
+    color: white;
+    font-size: 2vw;
+    background-color: rgb(68, 185, 174);
+    border-radius: 50%;
+    width: 15vw;
+    cursor: pointer;
+}
+
+/* Container to define boundaries for random movement */
+.space-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    overflow: hidden;
+  }
+  
+  /* Astronaut image styling */
+  .Hero {
+    position: absolute;
+    overflow: hidden;
+    animation: randomMove 5s infinite linear;
+  }
+  
+  @keyframes randomMove {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate(200px, -100px) rotate(45deg);
+    }
+    50% {
+      transform: translate(-100px, 150px) rotate(90deg);
+    }
+    75% {
+      transform: translate(100px, -100px) rotate(135deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+  }
+  
