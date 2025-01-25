@@ -3,46 +3,66 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
-import { Sparkles, Send } from "lucide-react"
-import { MemePreview } from "@/components/meme-preview"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Twitter } from "lucide-react"
 
-export function MemeGenerator() {
-  const [prompt, setPrompt] = useState("")
-  const { toast } = useToast()
+export default function MemeGenerator() {
+  const [topText, setTopText] = useState("")
+  const [bottomText, setBottomText] = useState("")
+  const [memeUrl, setMemeUrl] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would integrate with your AI and Twitter posting logic
-    toast({
-      title: "Meme Posted",
-      description: "Your AI-generated meme is now live on Twitter.",
-    })
-    setPrompt("")
+  const generateMeme = async () => {
+    // This is a placeholder. In a real application, you would call your AI service here.
+    setMemeUrl("/placeholder.svg?height=300&width=300")
+  }
+
+  const uploadToTwitter = async () => {
+    // This is a placeholder. In a real application, you would implement Twitter upload here.
+    alert("Meme uploaded to Twitter!")
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-      <div className="p-6">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center">
-          <Sparkles className="mr-2 text-neon-purple" />
-          Generate Meme
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>Create Your Meme</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="topText">Top Text</Label>
           <Input
-            type="text"
-            placeholder="Enter your meme prompt..."
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+            id="topText"
+            value={topText}
+            onChange={(e) => setTopText(e.target.value)}
+            placeholder="Enter top text"
           />
-          <Button type="submit" className="w-full bg-neon-purple hover:bg-neon-blue transition-colors duration-300">
-            <Send className="mr-2 h-4 w-4" /> Generate & Post
-          </Button>
-        </form>
-      </div>
-      <MemePreview />
-    </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="bottomText">Bottom Text</Label>
+          <Input
+            id="bottomText"
+            value={bottomText}
+            onChange={(e) => setBottomText(e.target.value)}
+            placeholder="Enter bottom text"
+          />
+        </div>
+        <Button onClick={generateMeme} className="w-full">
+          Generate Meme
+        </Button>
+        {memeUrl && (
+          <div className="mt-4">
+            <img src={memeUrl || "/placeholder.svg"} alt="Generated Meme" className="w-full rounded-md" />
+          </div>
+        )}
+      </CardContent>
+      <CardFooter>
+        <Button onClick={uploadToTwitter} className="w-full" disabled={!memeUrl}>
+          <Twitter className="mr-2 h-4 w-4" />
+          Upload to Twitter
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }
 

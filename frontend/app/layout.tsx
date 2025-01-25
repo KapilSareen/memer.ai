@@ -1,8 +1,15 @@
-import "@/styles/globals.css"
+import "./globals.css"
+import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { cn } from "@/lib/utils"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const inter = Inter({ subsets: ["latin"] })
+
+export const metadata: Metadata = {
+  title: "AI Meme Generator",
+  description: "Generate and share memes using AI",
+}
 
 export default function RootLayout({
   children,
@@ -10,12 +17,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={cn("min-h-screen bg-background font-sans antialiased", inter.className)}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="fixed top-4 right-4">
+            <ThemeToggle />
+          </div>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
 
-
-
-import './globals.css'
