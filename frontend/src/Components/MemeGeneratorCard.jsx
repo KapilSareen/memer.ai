@@ -21,13 +21,23 @@ function MemeGeneratorCard() {
            // Properly stringify the request body
         }), // Remove the trailing comma
       });
-      let data = meme.json()
-      setMemeUrl(data["meme"])
+      let data =await meme.json()
+      setMemeUrl(data.meme)
+      console.log(data)
+      console.log(data.meme)
     }
     const uploadToTwitter = async () => {
-      const post_meme = await fetch("http://localhost:5000/api/post-meme", method="POST",headers={"Content-type":"application/json"},body= JSON.stringify( {
-        "user_prompt" : prompt, "meme": memeUrl,"entity_id":user},))
-        console.log(post_meme.response())
+      console.log("called")
+      const post_meme = await fetch("http://localhost:5000/api/post-meme", {
+        method: "POST", // Correctly specifying the method inside an object
+        headers: {
+          "Content-Type": "application/json", // Ensure proper header capitalization
+        },
+        body: JSON.stringify({
+          user_prompt: prompt,
+          meme: memeUrl,
+          entity_id: my_user,
+        }),})
     }
   return (
     <div className='Card'>
