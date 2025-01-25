@@ -1,96 +1,44 @@
-import requests
-import csv
 import os
 import dotenv
+import json
+import utils
+import post
 
 dotenv.load_dotenv()
 
-def fetch_memes():
-    url = "https://api.imgflip.com/get_memes"
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        data = response.json()
-        if data["success"]:
-            return data["data"]["memes"]
-    return []
-
-def save_to_csv(memes, filename="memes.csv"):
-    with open(filename, mode="w", newline="", encoding="utf-8") as file:
-        writer = csv.writer(file)
-        writer.writerow(["id", "name", "url", "width", "height", "box_count"])
-        
-        for meme in memes:
-            writer.writerow([meme["id"], meme["name"], meme["url"], meme["width"], meme["height"], meme["box_count"]])
-    
-    print(f"Data saved to {filename}")
-
-def fetch():
-    memes = fetch_memes()
-    if memes:
-        save_to_csv(memes)
-    else:
-        print("Failed to fetch memes.")
-
-
-def get_meme_by_name(filename="memes.csv"):
-    memes = []
-    with open(filename, mode="r", newline="", encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            memes.append(row["name"])
-    return memes
-
-
-def get_meme_data_by_name(name, filename="memes.csv"):
-    with open(filename, mode="r", newline="", encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            if row["name"].lower() == name.lower():
-                return row 
-    return None 
-
-def create_meme(template_id, username, password, boxes):
-    url = "https://api.imgflip.com/caption_image"
-    
-    payload = {
-        "template_id": template_id,
-        "username": username,
-        "password": password
-    }
-    
-    for i, box in enumerate(boxes):
-        payload[f"boxes[{i}][text]"] = box["text"]
-    
-    response = requests.post(url, data=payload)
-    
-    if response.status_code == 200:
-        data = response.json()
-        if data.get("success"):
-            print("Meme created successfully!")
-            print("Meme URL:", data["data"]["url"])
-        else:
-            print("Error:", data.get("error_message", "Unknown error"))
-    else:
-        print("Failed to connect to API. Status code:", response.status_code)
-
-
-meme_names = get_meme_by_name()
-print(meme_names)
-
-
-meme_name = "Megamind peeking"
-meme_data = get_meme_data_by_name(meme_name)
-print(meme_data)
-
-
 USERNAME = os.getenv("MEME_USER")
 PASSWORD = os.getenv("MEME_PASS")
-TEMPLATE_ID = "370867422"
 
-BOXES = [
-    {"text": "Abhinav ki gand"},
-    {"text": "Swastic ki gand"},
-]
+def create_meme_from_prompt(user_prompt: str):
+    try:
+        template_name = utils.get_right_template(user_prompt)['result']
+        print('Template: ', template_name)
 
-create_meme(TEMPLATE_ID, USERNAME, PASSWORD, BOXES)
+        result = utils.get_meme_data_by_name(template_name)
+        result = json.loads(result)
+
+        template_id = result['id']
+        template_name = result['name']
+        box_count = result['box_count']
+
+        result = utils.get_meme_strings(user_prompt, box_count, template_name)['result']
+        result1 = json.loads(result)
+        print('Meme Strings: ', result1)
+
+        meme = utils.create_meme(template_id, USERNAME, PASSWORD, result1)
+        print("Meme Created:", meme)
+
+        media_id = utils.get_media_id(meme)
+        print("Media ID: ", media_id)
+
+        return  media_id
+
+    except Exception as e:
+        print(f"Error creating meme: {e}")
+        return  None
+
+user_prompt = "make a meme on cows"
+media_id=create_meme_from_prompt(user_prompt)
+
+response=post.post_tweet(media_id, user_prompt)
+print(response)

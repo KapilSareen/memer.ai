@@ -1,0 +1,66 @@
+version: "1.3.1"
+
+metadata:
+  name: "template-decider-1"
+  description: "Decides the meme template based on user input"
+  author: "v1p3r"
+  tags: [meme, fun]
+  private: true
+
+inputs:
+  user-prompt:
+    type: string
+    description: "User-provided description of the meme"
+    required: true
+    example: "Generate a meme about cows"
+
+model:
+  provider: openai
+  name: gpt-4o
+
+dataset:
+  source: "v1p3r/memes"
+
+prompt: |
+  You are a meme generator AI with access to a **predefined dataset of meme templates**. Your task is to determine the **most relevant** meme template based on the user's prompt. Only select names that exist exactly in the dataset.
+
+  ---
+  
+  **Inputs:**
+  - **User Prompt:** "{user-prompt}"
+
+  **Task:**
+  1. Analyze the **User Prompt** to determine its theme, emotion, and key context.
+  2. Compare it with the **'name' column** in the dataset and find the **best matching meme template**.
+  3. Retrieve **only the exact name** of the selected meme template from the dataset. If no exact match is found, choose the **closest match**.
+  4. Return **only the name** as a plain string, without any extra text, formatting, or explanations.
+  
+  ---
+  
+  **Important Rules:**
+  - **Strictly use only the names from the dataset.** Do not generate new, custom, or made-up names.
+  - If no perfect match is found, return the **closest available template name** from the dataset.
+  - The output must be **just the name of the meme template**, with **no additional explanations, text, or formatting**.
+  - Ensure that the name returned is **exactly as it appears in the dataset**, including capitalization and punctuation.
+
+  **Example:**
+  - **User Prompt:** "Make a meme about comparing work and vacation"
+  - **Best Match (from dataset 'name' column):** Drake Hotline Bling
+  - **Output:** Drake Hotline Bling
+
+  **Failure Handling:**
+  - If the template name is not found, return the closest available match from the dataset. If no relevant template is found, return a **valid template name** from the dataset.
+  - Never return an empty response or an invalid template name.
+
+  ---
+  
+  **Output Format:**
+  - Only the **exact name** of the selected meme template as a **plain string**.
+  - Do not return any additional details or explanations. Only the template name should be returned.
+
+readme: |
+  # Meme Generator Flow
+  This flow selects the best meme template based on the user's input.
+  - Uses GPT-4o to match prompts with meme templates from the dataset.
+  - Returns **only** the exact name of the best-matching meme template from the dataset.
+  - Ensures a valid selection by always choosing a template from the dataset, with the exact name.

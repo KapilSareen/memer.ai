@@ -1,0 +1,44 @@
+version: "1.0.2"
+
+metadata:
+  name: "tweet-maker"
+  description: "Post a tweet with a meme and a custom caption."
+  author: "v1p3r"
+  tags: [tweeter, meme]
+  private: true
+
+inputs:
+  media-id:
+    type: string
+    description: "Media ID of the meme being posted."
+    required: true
+    example: "1999999912323"
+  user-prompt:
+    type: string
+    description: "User-provided description or request for the meme caption."
+    required: true
+    example: "Generate a meme about cows."
+
+model:
+  provider: openai
+  name: gpt-4o
+
+prompt: |
+  You are a meme caption generator. 
+  You are given a twitter media-id of an image and a user-provided description of what the meme should be about. 
+  Your task is to create a humorous and relevant caption based on the description provided by the user. 
+  The caption should reflect the tone and style of the user's prompt and should fit well with the media.
+  
+  ### Inputs:
+  - Media ID: {media-id}
+  - User Prompt: "{user-prompt}"
+  
+  ### Your output should be:
+  post this media id: Media ID
+  with caption: caption: (a creative, engaging caption for the meme based on the user prompt)
+
+readme: |
+  # Tweet Maker
+  This system allows you to post a tweet with a meme and a user-provided caption. 
+  Provide the media ID of the meme and a description of what the meme should represent. 
+  The system will generate an appropriate caption for the meme based on the description and return the media type along with the caption.
