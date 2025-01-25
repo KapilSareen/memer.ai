@@ -32,7 +32,8 @@
         font-style: normal;
     }
     input{
-        width: 100%;
+        
+        width: 60%;
         border-radius: 8px;
         border: 0.05px solid wheat;
         height: 3vw;
