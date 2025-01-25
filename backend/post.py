@@ -21,11 +21,11 @@ def post_tweet(id, userprompt):
         ComposioConfig(
             COMPOSIO_API_KEY=os.getenv("COMPOSIO_API_KEY"),
             ACTION="TWITTER_CREATION_OF_A_POST",
-            TASK="{content}",  
+            TASK="POST THIS TWEET {content}",  
             ENTITY_ID="default", 
         )
     )
     return response
 
-response=post_tweet("1882983212726755328", "make a meme on cows")
+response=post_tweet("make a meme on donald trump", 1883012549152747521)
 print(response)

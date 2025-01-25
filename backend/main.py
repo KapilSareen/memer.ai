@@ -40,5 +40,5 @@ def create_meme_from_prompt(user_prompt: str):
 user_prompt = "make a meme on cows"
 media_id=create_meme_from_prompt(user_prompt)
 
-response=post.post_tweet(media_id, user_prompt)
-print(response)
+# response=post.post_tweet(media_id, user_prompt)
+# print(response)
