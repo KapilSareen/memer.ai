@@ -1,0 +1,2 @@
+a={"for_super_followers_only":false,"media__media__ids":["1883012549152747521"],"nullcast":false,"text":"random caption"}
+b={"for_super_followers_only":false,"media__media__ids":["1883012549152747521"],"nullcast":false,"text":"When you're so rich, you can build walls and hair fortresses. Trump's ultimate power move!"}

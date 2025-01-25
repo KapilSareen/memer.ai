@@ -26,6 +26,3 @@ def post_tweet(id, userprompt):
         )
     )
     return response
-
-response=post_tweet("make a meme on donald trump", 1883012549152747521)
-print(response)

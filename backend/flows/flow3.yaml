@@ -1,4 +1,4 @@
-version: "1.0.6"
+version: "1.1.4"
 
 metadata:
   name: "tweet-maker"
@@ -20,8 +20,8 @@ inputs:
     example: "Generate a meme about cows."
 
 model:
-  provider: openai
-  name: gpt-4o
+  provider: anthropic
+  name: claude-3.5-sonnet
 
 prompt: |
   You are a meme caption generator. 
@@ -32,13 +32,21 @@ prompt: |
   ### Inputs:
   - Media ID: {media-id}
   - User Prompt: "{user-prompt}"
+
+  ### Output in json
+  for_super_followers_only: false
+  media__media__ids : [0 : (media-id)]
+  nullcast: false
+  text: (your caption)
+
+  - Additional Rules to follow:
+    1. Remove any newlines and extra spaces to output a valid and well formatted json.
+    2. The generated tweet should not contain any special characters and should strictly not exceed 60 characters.
+
   
-  ### Your output should be:
-  post this media id: Media ID
-  with caption: caption: (a creative, engaging caption for the meme based on the user prompt)
 
 readme: |
   # Tweet Maker
-  This system allows you to post a tweet with a meme and a user-provided caption. 
+  This system allows you to post a tweet with a meme and a user-provided caption. STRCTLYYYYY!!
   Provide the media ID of the meme and a description of what the meme should represent. 
   The system will generate an appropriate caption for the meme based on the description and return the media type along with the caption.

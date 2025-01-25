@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify
 import os
 import dotenv
 import json
@@ -5,6 +6,8 @@ import utils
 import post
 
 dotenv.load_dotenv()
+
+app = Flask(__name__)
 
 USERNAME = os.getenv("MEME_USER")
 PASSWORD = os.getenv("MEME_PASS")
@@ -31,14 +34,27 @@ def create_meme_from_prompt(user_prompt: str):
         media_id = utils.get_media_id(meme)
         print("Media ID: ", media_id)
 
-        return  media_id
-
+        return media_id
     except Exception as e:
         print(f"Error creating meme: {e}")
-        return  None
+        return None
 
-user_prompt = "make a meme on cows"
-media_id=create_meme_from_prompt(user_prompt)
+@app.route('/generate-meme', methods=['POST'])
+def generate_meme():
+    data = request.get_json()
+    user_prompt = data.get("user_prompt")
+    
+    if not user_prompt:
+        return jsonify({"error": "Missing user_prompt"}), 400
+    
+    media_id = create_meme_from_prompt(user_prompt)
+    
+    if media_id is None:
+        return jsonify({"error": "Failed to create meme"}), 500
+    
+    response = post.post_tweet(media_id, user_prompt)
+    
+    return jsonify({"media_id": media_id, "response": response})
 
-# response=post.post_tweet(media_id, user_prompt)
-# print(response)
+if __name__ == '__main__':
+    app.run(debug=True)
