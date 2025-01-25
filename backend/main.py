@@ -4,6 +4,7 @@ import dotenv
 import json
 import utils
 import post
+from flask_cors import CORS
 
 dotenv.load_dotenv()
 
@@ -12,6 +13,7 @@ app = Flask(__name__)
 USERNAME = os.getenv("MEME_USER")
 PASSWORD = os.getenv("MEME_PASS")
 
+CORS(app)
 def create_meme_from_prompt(user_prompt: str):
     try:
         template_name = utils.get_right_template(user_prompt)['result']
@@ -38,6 +40,7 @@ def create_meme_from_prompt(user_prompt: str):
 @app.route('/generate-meme', methods=['POST'])
 def generate_meme():
     data = request.get_json()
+    print(data)
     user_prompt = data.get("user_prompt")
     if not user_prompt:
         return jsonify({"error": "Missing user_prompt"}), 400
